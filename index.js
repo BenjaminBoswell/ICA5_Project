@@ -5,6 +5,7 @@ const mysql = require('mysql2/promise');
 
 //Setup defaults for script
 const app = express();
+app.use(express.json());
 app.use(express.static('public'))
 
 const upload = multer()
@@ -28,7 +29,7 @@ async function query(sql, params) {
     return results;
 }
 app.post("/api/sensor",
-    async (req, res) => {
+    async (request, response) => {
 
         try {
 
@@ -41,8 +42,8 @@ app.post("/api/sensor",
             console.error('Error inserting light data:', error);
             response.status(500).json({ error: 'An error occurred while inserting light data' });
         }
-        console.log(req.body);
-        res.json({
+        console.log(request.body);
+        response.json({
             message: "Sensor data received"
         });
     });
